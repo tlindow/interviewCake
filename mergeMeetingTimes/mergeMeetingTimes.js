@@ -1,24 +1,24 @@
 function mergeRanges(meetings) {
-
-  // Merge meetings ranges
-  // sort by startTime
-  // loop through
-  // if any of the endTime is greater than the next start time
-      //change end time to next end time, and splice out next tuple
-      //stay on currernt tuple
-      
-  meetings.sort((a, b) => a.startTime - b.startTime);
+  let mergedCount = 0;
+  let i = 1;
+  const mergedMeetings = [];
+  const meetingsCopy = JSON.parse(JSON.stringify(meetings));
   
-  let i = 0;
-  while (i < meetings.length - 1) {
-    if (meetings[i].endTime >= meetings[i + 1].startTime) {
-      if (meetings[i + 1].endTime > meetings[i].endTime) {
-        meetings[i].endTime = meetings[i + 1].endTime;
+  const sortedMeetings = meetingsCopy.sort((a, b) => {
+    return a.startTime - b.startTime;
+  });
+  mergedMeetings.push(sortedMeetings[0]);
+
+  while (i < meetings.length) {
+    if (sortedMeetings[i].startTime <= mergedMeetings[mergedCount].endTime) {
+      if (sortedMeetings[i].endTime > mergedMeetings[mergedCount].endTime) {
+        mergedMeetings[mergedCount].endTime = sortedMeetings[i].endTime;
       }
-      meetings.splice(i + 1, 1);
     } else {
-      i++
+      mergedMeetings.push(sortedMeetings[i]);
+      mergedCount++;
     }
+    i++;
   }
-  return meetings;
+  return mergedMeetings;
 }
