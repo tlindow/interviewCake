@@ -36,15 +36,6 @@ function isBinarySearchTree(treeRoot) {
       prevVal = node.value;
       node = node.right;
     }
-  }
-  // if left, push
-  // else 
-    // node = pop
-    // if prevVal > node.value
-      // return false;
-    // prevVal = node.value
-    // if right
-      // push right
-  
+  }  
   return true;
 }
