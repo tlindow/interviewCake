@@ -17,35 +17,31 @@ class BinaryTreeNode {
 }
 
 function findSecondLargest(treeRoot) {
-
-  // Find the second largest item in the binary search tree
+  const stack = [];
   let node = treeRoot;
+  let count = 1;
   let parent;
-  let hasSubtree = false;
   
-  if (!node || (!node.right && !node.left)) {
-    throw new Error('Not enough nodes!');
+  if (!node) {
+    throw new Error('empty tree')
   }
   
-  while(true) {
-    if (node.right) {
+  while (stack.length || node) {
+    if (node) {
+      if (!node.right) {
+        stack.push(parent);
+        stack.push(node);
+      }
       parent = node;
       node = node.right;
     } else {
-      if (!node.left && !hasSubtree) {
-        return parent.value;
-      }
-      
-      if (hasSubtree && !node.right) {
+      node = stack.pop();
+      if (count === 2) {
         return node.value;
-      } 
-      
-      parent = node.left;
-      node = node.left;
-      hasSubtree = true;
-      if (!node.right) {
-        return parent.value;
       }
+      
+      node = node.left;
+      count++;
     }
   }
 }
