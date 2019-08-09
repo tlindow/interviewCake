@@ -1,29 +1,18 @@
-function findRotationPoint(words) {
-
-  // Find the rotation point in the vector
-  
-  // Edge cases
-  if (words.length === 1) {
-    return 0;
-  } else if (words.length === 0 || words.length === undefined) {
-    return null;
-  }
-  
-  // Rotation point at 0th index
-  if (words[0] < words[words.length - 1]) {
-    return 0;
-  }
-  
-  let middleIdx = Math.floor(words.length/2);
-  while (true) {
-    if (words[middleIdx - 1] > words[middleIdx]) {
-      return middleIdx;
+function findRotationPoint(arr) {
+  if (arr.length === 0) return null;
+  let begin = 0;
+  let mid = Math.floor(arr.length/2);
+  while(mid) {
+    if (arr[mid - 1] > arr[mid]) {
+      return mid;
+    }
+    
+    if (arr[begin] > arr[mid]) {
+      mid = Math.floor((mid - beg - 1)/2);
     } else {
-      if (words[0] > words[middleIdx]) {
-        middleIdx = Math.floor(middleIdx/2);
-      } else {
-        middleIdx = Math.floor( (words.length - middleIdx)/2 + middleIdx );
-      }
+      beg = mid + 1;
+      mid = Math.floor((arr.length - beg)/2 + beg);
     }
   }
+  return 0;
 }
