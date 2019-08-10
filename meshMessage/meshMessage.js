@@ -1,41 +1,38 @@
 function getPath(graph, startNode, endNode) {
-
-  // Find the shortest route in the network between the two users
-  const queue = [startNode];
-  const paths = {startNode: null};
-  const path = [endNode];
-  let node;
-  
-  if (!(startNode in graph) || !(endNode in graph)) {
-    throw new Error('Input nodes are not in graph');
+  if (startNode === endNode) {
+    return [startNode];
   }
   
+  if (!graph[startNode] || !graph[endNode]) {
+    throw new Error('start or end node not present');
+  }
   
-  while (queue.length) {
+  const shortestPaths = {};
+  const path = [];
+  const queue = [startNode];
+  let node;
+  let neighbor;
+  
+  while (queue.length && !shortestPaths[endNode]) {
     node = queue.shift();
-    
-    if (node === endNode) {
-      break;
-    }
-    
     for (let i = 0; i < graph[node].length; i++) {
-      if (!paths[graph[node][i]]) {
-        queue.push(graph[node][i]);
-        paths[graph[node][i]] = node;
+      neighbor = graph[node][i];
+      if (!shortestPaths[neighbor]) {
+        shortestPaths[neighbor] = node;
+        queue.push(neighbor);
       }
     }
   }
   
-  if (node !== endNode) {
+  if (!shortestPaths[endNode]) {
     return null;
   }
   
-  let nextNode = path[0];
-  while (true) {
-    if (nextNode === startNode) {
-      return path;
-    }
-    nextNode = paths[path[0]];
-    path.unshift(nextNode);
+  node = endNode;
+  while (node !== startNode) {
+    path.push(node);
+    node = shortestPaths[node];
   }
+  path.push(startNode)
+  return path.reverse();
 }
